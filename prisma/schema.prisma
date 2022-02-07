@@ -1,0 +1,32 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Profile {
+  id              Int              @id @default(autoincrement())
+  partnerContacts PartnerContact[]
+
+  @@map("profiles")
+}
+
+model Partner {
+  id              Int              @id @default(autoincrement())
+  partnerContacts PartnerContact[]
+
+  @@map("partners")
+}
+
+model PartnerContact {
+  id        Int     @id @default(autoincrement())
+  partner   Partner @relation(fields: [partnerID], references: [id])
+  partnerID Int     @map("partner_id")
+  profile   Profile @relation(fields: [profileID], references: [id])
+  profileID Int     @map("profile_id")
+
+  @@map("partner_contacts")
+}
