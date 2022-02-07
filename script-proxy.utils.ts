@@ -121,9 +121,7 @@ export const createPrismaProxy = (
   const prisma = new Proxy(unrestrictedPrisma, {
     get(target, propertyKey, receiver) {
       if (propertyKey in prismaDelegateProxies) {
-        return prismaDelegateProxies[
-          propertyKey as keyof typeof prismaDelegateProxies
-        ];
+        return Reflect.get(prismaDelegateProxies, propertyKey, receiver);
       }
 
       return Reflect.get(target, propertyKey, receiver);
