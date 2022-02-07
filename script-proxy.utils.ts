@@ -23,16 +23,16 @@ const createPrismaFindOperationProxy = <TFunction extends TFindFunction>(
 
       if (args === undefined) {
         args = { where };
-      } else if (`where` in args) {
-        if (Object.keys(args.where!).length === 1 && `AND` in args.where!) {
+      } else if (`where` in args && args.where !== undefined) {
+        if (Object.keys(args.where).length === 1 && `AND` in args.where) {
           if (Array.isArray(args.where.AND)) {
             args.where.AND = [...args.where.AND, where];
           } else {
-            args.where.AND = [args.where.AND!, where];
+            args.where.AND = [args.where.AND, where];
           }
         } else {
           args.where = {
-            AND: [args.where!, where],
+            AND: [args.where, where],
           };
         }
       } else {
